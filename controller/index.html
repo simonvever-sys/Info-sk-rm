@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TV Kontrolpanel</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(180deg, #f2f6ff 0%, #e4ecff 100%);
+        min-height: 100vh;
+        color: #0f172a;
+      }
+
+      .wrap {
+        width: min(760px, 92vw);
+        margin: 2rem auto;
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 18px 45px rgba(17, 24, 39, 0.14);
+        padding: 1.2rem;
+      }
+
+      h1 {
+        margin: 0 0 0.6rem;
+        font-size: 1.6rem;
+      }
+
+      p {
+        margin: 0 0 1rem;
+        color: #334155;
+      }
+
+      label {
+        display: block;
+        margin: 0.8rem 0 0.35rem;
+        font-weight: 600;
+      }
+
+      input[type="text"],
+      textarea {
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        font-size: 1rem;
+        padding: 0.7rem 0.85rem;
+        outline: none;
+      }
+
+      input[type="text"]:focus,
+      textarea:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      }
+
+      textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+
+      .colors {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 0.35rem;
+      }
+
+      .color-field {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+      }
+
+      input[type="color"] {
+        width: 54px;
+        height: 42px;
+        border: 0;
+        background: transparent;
+        padding: 0;
+      }
+
+      .btn {
+        margin-top: 1rem;
+        width: 100%;
+        border: 0;
+        border-radius: 12px;
+        background: #0f172a;
+        color: #ffffff;
+        font-size: 1.02rem;
+        font-weight: 700;
+        padding: 0.9rem 1rem;
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .status {
+        margin-top: 0.9rem;
+        font-size: 0.95rem;
+        color: #334155;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>TV Kontrolpanel</h1>
+      <p>Indsæt et videolink og ticker-indhold, og tryk på Opdater TV.</p>
+
+      <form id="controlForm">
+        <label for="videoUrl">Video URL (YouTube, DR eller direkte videofil)</label>
+        <input
+          type="text"
+          id="videoUrl"
+          name="videoUrl"
+          placeholder="https://youtube.com/..."
+          autocomplete="off"
+        />
+
+        <label for="tickerText">Ticker tekst</label>
+        <textarea
+          id="tickerText"
+          name="tickerText"
+          placeholder="Husk fællesspisning kl 18"
+        ></textarea>
+
+        <div class="colors">
+          <div>
+            <label for="tickerBg">Ticker baggrund</label>
+            <div class="color-field">
+              <input type="color" id="tickerBg" name="tickerBg" value="#d90429" />
+              <input type="text" id="tickerBgText" value="#d90429" maxlength="7" />
+            </div>
+          </div>
+
+          <div>
+            <label for="tickerColor">Ticker tekstfarve</label>
+            <div class="color-field">
+              <input type="color" id="tickerColor" name="tickerColor" value="#ffffff" />
+              <input type="text" id="tickerColorText" value="#ffffff" maxlength="7" />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn">Opdater TV</button>
+        <div id="status" class="status"></div>
+      </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="/shared/supabase-config.js"></script>
+    <script src="controller.js"></script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "plushusen-introskaerm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TV app + controller for local network signage",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "start:lan": "HOST=0.0.0.0 PORT=3000 node server/server.js",
+    "start:local": "HOST=127.0.0.1 PORT=3000 node server/server.js"
+  }
+}

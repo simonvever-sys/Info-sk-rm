@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plushusen TV</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="screen">
+      <section id="videoContainer" class="video-layer"></section>
+
+      <header class="top-bar">
+        <div class="time" id="time">00:00:00</div>
+        <div class="date" id="date">-</div>
+      </header>
+
+      <footer class="ticker" id="ticker">
+        <div class="ticker-track">
+          <span id="tickerText">Velkommen til Plushusen</span>
+        </div>
+      </footer>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="/shared/supabase-config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
