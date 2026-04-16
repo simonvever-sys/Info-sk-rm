@@ -35,6 +35,12 @@ http://<DIN_IP>:3000/control
 - `tv` og `controller` læser/skriver direkte til tabellen `app_state` (`id = 'main'`).
 - Realtime bruges automatisk hvis tabellen er slået til i Supabase Realtime.
 
+## GitHub Pages (offentlig adgang)
+Når GitHub Pages er aktiveret på repoet, kan appen åbnes her:
+- Startside: `https://simonvever-sys.github.io/Info-sk-rm/`
+- TV: `https://simonvever-sys.github.io/Info-sk-rm/tv/`
+- Controller: `https://simonvever-sys.github.io/Info-sk-rm/controller/`
+
 Body eksempel:
 ```json
 {
