@@ -12,6 +12,16 @@ const sbClient =
   supabaseConfig && window.supabase
     ? window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey)
     : null;
+const IS_GITHUB_PAGES = window.location.hostname.endsWith('github.io');
+const API_BASE = IS_GITHUB_PAGES ? null : window.location.origin;
+
+function apiUrl(pathnameWithQuery) {
+  if (!API_BASE) return null;
+  const normalized = pathnameWithQuery.startsWith('/')
+    ? pathnameWithQuery
+    : `/${pathnameWithQuery}`;
+  return `${API_BASE}${normalized}`;
+}
 
 function isHexColor(value) {
   return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value || '');
@@ -59,8 +69,14 @@ async function loadCurrentState() {
     }
   }
 
+  const stateEndpoint = apiUrl('/state');
+  if (!stateEndpoint) {
+    statusEl.textContent = 'Kunne ikke hente data: Ingen lokal server fundet (Supabase kræves online).';
+    return;
+  }
+
   try {
-    const res = await fetch('/state', { cache: 'no-store' });
+    const res = await fetch(stateEndpoint, { cache: 'no-store' });
     if (!res.ok) return;
 
     const data = await res.json();
@@ -116,7 +132,12 @@ form.addEventListener('submit', async (event) => {
       return;
     }
 
-    const res = await fetch('/update', {
+    const updateEndpoint = apiUrl('/update');
+    if (!updateEndpoint) {
+      throw new Error('No API endpoint available');
+    }
+
+    const res = await fetch(updateEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)

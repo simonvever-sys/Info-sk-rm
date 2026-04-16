@@ -15,7 +15,16 @@ const sbClient =
 let lastVideoUrl = null;
 let pollTimer = null;
 let renderToken = 0;
-const API_BASE = window.location.origin;
+const IS_GITHUB_PAGES = window.location.hostname.endsWith('github.io');
+const API_BASE = IS_GITHUB_PAGES ? null : window.location.origin;
+
+function apiUrl(pathnameWithQuery) {
+  if (!API_BASE) return null;
+  const normalized = pathnameWithQuery.startsWith('/')
+    ? pathnameWithQuery
+    : `/${pathnameWithQuery}`;
+  return `${API_BASE}${normalized}`;
+}
 
 function mapSupabaseRowToState(row) {
   if (!row) return null;
@@ -100,8 +109,10 @@ function inferPlayerType(url) {
 }
 
 async function resolveDrVideo(url) {
+  const endpoint = apiUrl(`/resolve-video?url=${encodeURIComponent(url)}`);
+  if (!endpoint) return null;
+
   try {
-    const endpoint = `${API_BASE}/resolve-video?url=${encodeURIComponent(url)}`;
     const res = await fetch(endpoint, { cache: 'no-store' });
     if (!res.ok) return null;
     const payload = await res.json();
@@ -216,8 +227,13 @@ async function syncState() {
     }
   }
 
+  const stateEndpoint = apiUrl('/state');
+  if (!stateEndpoint) {
+    return;
+  }
+
   try {
-    const res = await fetch(`${API_BASE}/state`, { cache: 'no-store' });
+    const res = await fetch(stateEndpoint, { cache: 'no-store' });
     if (!res.ok) return;
 
     const data = await res.json();
@@ -281,7 +297,12 @@ function startRealtime() {
     return;
   }
 
-  const es = new EventSource(`${API_BASE}/events`);
+  const eventsEndpoint = apiUrl('/events');
+  if (!eventsEndpoint) {
+    return;
+  }
+
+  const es = new EventSource(eventsEndpoint);
   es.onmessage = (event) => {
     try {
       const data = JSON.parse(event.data);
